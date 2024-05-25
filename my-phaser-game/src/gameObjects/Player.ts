@@ -1,13 +1,27 @@
 import { GameObjects, Physics } from "phaser";
 import { Bullet } from "./Bullet";
 
+export enum PlayerState {
+    Waiting,
+    Start,
+    CanMove
+}
+
+export enum PlayerDirection {
+    Up,
+    Down,
+    Left,
+    Right
+}
+
 export class Player extends Physics.Arcade.Image {
     
     // Player states: waiting, start, can_move
-    state = "can_move";
+    state: PlayerState = PlayerState.CanMove;
     //propulsion_fire = null;
     scene: Phaser.Scene;
     bullets = null;
+    shipVelocity: number = 2;
 
     constructor(scene: Phaser.Scene) {
         super(scene, 300, 300, "player");
@@ -27,7 +41,7 @@ export class Player extends Physics.Arcade.Image {
     }
 
     start() {
-        this.state = "can_move";
+        this.state = PlayerState.CanMove;
         //const propulsion_fires_trail = [];
 
         // Effect to move the player from left to right
@@ -67,15 +81,28 @@ export class Player extends Physics.Arcade.Image {
         // });
     }
 
-    move(direction: string) {
-        if(this.state === "can_move") {
-            if (direction === "up" && this.y - 10 > 0) {
-                this.y -= 5;
-                //this.updatePropulsionFire();
-            } else if (direction === "down" && this.y + 75 < this.scene.scale.height) {
-                this.y += 5;
-                //this.updatePropulsionFire();
-            }
+    move(direction: PlayerDirection) {
+        if (this.state === PlayerState.CanMove) {
+          switch (direction) {
+            case PlayerDirection.Up:
+                if (this.y - 10 > 0) {
+                    this.y -= this.shipVelocity;
+                }
+                break;
+            case PlayerDirection.Down:
+                if (this.y + 75 < this.scene.scale.height) {
+                    this.y += this.shipVelocity;
+                }
+                break;
+            case PlayerDirection.Left:
+                if(this.x > 50)
+                    this.x -= this.shipVelocity;
+                break;
+            case PlayerDirection.Right:
+                if(this.x < this.scene.scale.width-50)
+                    this.x += this.shipVelocity;
+                break;
+          }
         }
     }
 

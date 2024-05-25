@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { Player } from '../gameObjects/Player';
+import { Player, PlayerDirection } from '../gameObjects/Player';
 
 export class Game extends Scene
 {
@@ -28,12 +28,20 @@ export class Game extends Scene
     update(){
         //console.log(Math.random())
         if(this.cursors?.up.isDown){
-            this.player.move('up');
+            this.player.move(PlayerDirection.Up);
         }
 
         if(this.cursors?.down.isDown){
-            this.player.move('down');
+            this.player.move(PlayerDirection.Down);
         }
+
+        if(this.cursors?.left.isDown){
+            this.player.move(PlayerDirection.Left);
+        }
+
+        if(this.cursors?.right.isDown){
+            this.player.move(PlayerDirection.Right);
+        }        
 
         this.player.update();
 
