@@ -4,13 +4,13 @@ import { Bullet } from "./Bullet";
 export class Player extends Physics.Arcade.Image {
     
     // Player states: waiting, start, can_move
-    state = "waiting";
+    state = "can_move";
     //propulsion_fire = null;
     scene: Phaser.Scene;
     bullets = null;
 
     constructor(scene: Phaser.Scene) {
-        super(scene, 100, 100, "player");
+        super(scene, 300, 300, "player");
         this.scene = scene;
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
@@ -27,7 +27,7 @@ export class Player extends Physics.Arcade.Image {
     }
 
     start() {
-        this.state = "start";
+        this.state = "can_move";
         //const propulsion_fires_trail = [];
 
         // Effect to move the player from left to right
